@@ -1,4 +1,5 @@
 import type { MlbScheduleResponse } from '../types/mlb';
+import type { MlbGame } from '../types/mlb';
 
 const BASE_URL = 'https://statsapi.mlb.com/api/v1';
 
@@ -23,4 +24,23 @@ export function extractFinalScores(schedule: MlbScheduleResponse): number[] {
     }
   }
   return scores;
+}
+
+export async function fetchSeasonSchedule(season: number): Promise<MlbScheduleResponse> {
+  const url = `${BASE_URL}/schedule?sportId=1&season=${season}&gameType=R&hydrate=linescore`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`MLB API error: ${res.status} ${res.statusText}`);
+  }
+  return res.json();
+}
+
+export function extractFinalGames(schedule: MlbScheduleResponse): MlbGame[] {
+  const games: MlbGame[] = [];
+  for (const dateEntry of schedule.dates) {
+    for (const game of dateEntry.games) {
+      if (game.status.abstractGameState === 'Final') games.push(game);
+    }
+  }
+  return games;
 }
