@@ -1,49 +1,102 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
-}
-.marquee {
-  overflow: hidden;
-  white-space: nowrap;
-  animation: marquee 8s linear infinite;
-}
-
 body {
-  background: #000033 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='2' cy='2' r='1' fill='white'/%3E%3Ccircle cx='20' cy='30' r='1' fill='white'/%3E%3Ccircle cx='35' cy='10' r='1' fill='white'/%3E%3C/svg%3E");
-  font-family: "Comic Sans MS", "Times New Roman", serif;
-  color: #ffff00;
   margin: 0;
+}
+
+.app-root {
+  min-height: 100vh;
+  font-family: Verdana, Arial, Helvetica, sans-serif;
   padding: 16px;
+  background: var(--bg-color) var(--bg-image);
+  color: var(--text-color);
+  font-size: 16px;
+
+  /* Classic (default) — grey, northwest green, navy, https://teamcolorcodes.com/seattle-mariners-color-codes */
+  --bg-color: #005C5C; /* northwest green */
+  --bg-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40'%3E%3Ccircle cx='2' cy='2' r='1' fill='white'/%3E%3Ccircle cx='20' cy='30' r='1' fill='white'/%3E%3Ccircle cx='35' cy='10' r='1' fill='white'/%3E%3C/svg%3E");
+  --text-color: #ffff00;
+  --header-color: #000033; 
+  --header-shadow: #005C5C; /* Silver */
+  --box-bg: #C4CED4;
+  --box-text: #0C2C56;
+  --box-border: #D50032; /* Red */
+  --accent-row: #ccffcc;
+  --table-bg: #ffffff;
+  --table-text: #000000;
+  --table-border: #0C2C56; /* Navy Blue */
+  --table-header-bg: #0C2C56;
+  --table-header-text: #ffffff;
+}
+
+/* City Connect — Rush Blue, Sundown, Amarillo, black */
+.app-root[data-theme='cityConnect'] {
+  --bg-color: #002878;
+  --bg-image: none;
+  --text-color: #FFCC00;
+  --header-color: #ffd84d;
+  --header-shadow: #000000;
+  --box-bg: #14316f;
+  --box-text: #FFCC00;
+  --box-border: #FFCC00;
+  --accent-row: #1d3f8a;
+  --table-bg: #002878;
+  --table-text: #ffffff;
+  --table-border: #FFCC00;
+  --table-header-bg: #FFCC00;
+  --table-header-text: #002878;
+}
+
+/* Sunday Steelhead — cream and black */
+.app-root[data-theme='steelhead'] {
+  --bg-color: #161616;
+  --bg-image: none;
+  --text-color: #ede0c8;
+  --header-color: #ede0c8;
+  --header-shadow: #000000;
+  --box-bg: #262626;
+  --box-text: #ede0c8;
+  --box-border: #ede0c8;
+  --accent-row: #3a3a3a;
+  --table-bg: #1e1e1e;
+  --table-text: #ede0c8;
+  --table-border: #ede0c8;
+  --table-header-bg: #ede0c8;
+  --table-header-text: #161616;
+}
+
+.sort-arrow {
+  font-size: 0.8em;
+}
+
+.sort-arrow.idle {
+  opacity: 0.5;
+}
+
+.sort-arrow.active {
+  opacity: 1;
+  font-weight: bold;
 }
 
 h1 {
   text-align: center;
-  color: #00ffff;
-  text-shadow: 2px 2px #ff00ff;
-  font-size: 2.5em;
+  color: var(--header-color);
+  font-size: 1.8em;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  border-bottom: 3px solid var(--table-border);
+  padding-bottom: 8px;
+  margin-bottom: 16px;
 }
 
 .retro-box {
-  background: #ffffcc;
-  color: #000000;
-  border: 4px ridge #ff6600;
-  padding: 12px;
+  background: var(--box-bg);
+  color: var(--box-text);
+  border: 1px solid var(--box-border);
+  border-radius: 2px;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.4), 0 1px 3px rgba(0,0,0,0.3);
+  padding: 12px 16px;
   margin: 16px auto;
   max-width: 500px;
+  font-size: 0.95em;
 }
 
 .mariners-highlight table {
@@ -52,8 +105,15 @@ h1 {
 }
 
 .mariners-stat-table td {
-  border: 1px solid #999900;
+  border: 1px solid var(--box-border);
   padding: 6px;
+}
+
+.mariners-stat-table th {
+  border: 1px solid var(--box-border);
+  padding: 6px;
+  text-align: left;
+  font-size: 0.85em;
 }
 
 .big-stat {
@@ -62,8 +122,17 @@ h1 {
   text-align: right;
 }
 
-.diff-up { color: #cc0000; }
-.diff-down { color: #006600; }
+.diff-pos-1 { background: #d4ecd4; color: #1a1a1a; font-weight: bold; }
+.diff-pos-2 { background: #8fd19e; color: #1a1a1a; font-weight: bold; }
+.diff-pos-3 { background: #4caf6b; color: #ffffff; font-weight: bold; }
+.diff-pos-4 { background: #1a7a3c; color: #ffffff; font-weight: bold; }
+
+.diff-neg-1 { background: #f8d8d5; color: #1a1a1a; font-weight: bold; }
+.diff-neg-2 { background: #ea9b93; color: #1a1a1a; font-weight: bold; }
+.diff-neg-3 { background: #d9645a; color: #ffffff; font-weight: bold; }
+.diff-neg-4 { background: #b3261e; color: #ffffff; font-weight: bold; }
+
+.diff-zero { background: transparent; }
 
 .blink {
   /* animation: blinker 1s step-start infinite; */
@@ -76,208 +145,115 @@ h1 {
 
 .retro-table {
   margin: 0 auto;
-  background: #ffffff;
-  color: #000000;
-  border: 3px double #000099;
+  background: var(--table-bg);
+  color: var(--table-text);
+  border: 1px solid var(--table-border);
   border-collapse: collapse;
   width: 90%;
   max-width: 800px;
+  font-size: 0.85em;
 }
 
 .retro-table th {
-  background: #000099;
-  color: #ffffff;
-  padding: 6px;
+  background: var(--table-header-bg);
+  color: var(--table-header-text);
+  padding: 5px 8px;
+  font-weight: bold;
+  border: 1px solid var(--table-border);
 }
 
 .retro-table td {
-  padding: 4px 8px;
+  padding: 3px 8px;
+  border: 1px solid var(--table-border);
 }
+
+.retro-table tbody tr:nth-child(even) td:not([class*="diff-"]) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.diff-pos-1 { background: #d4ecd4; color: #1a1a1a; font-weight: bold; }
+.diff-pos-2 { background: #8fd19e; color: #1a1a1a; font-weight: bold; }
+.diff-pos-3 { background: #4caf6b; color: #ffffff; font-weight: bold; }
+.diff-pos-4 { background: #1a7a3c; color: #ffffff; font-weight: bold; }
+
+.diff-neg-1 { background: #f8d8d5; color: #1a1a1a; font-weight: bold; }
+.diff-neg-2 { background: #ea9b93; color: #1a1a1a; font-weight: bold; }
+.diff-neg-3 { background: #d9645a; color: #ffffff; font-weight: bold; }
+.diff-neg-4 { background: #b3261e; color: #ffffff; font-weight: bold; }
+
+.diff-zero { background: transparent; }
 
 .division-header {
   text-align: center;
   font-weight: bold;
   color: #ffffff;
-  text-shadow: 1px 1px #000000;
+  padding: 4px;
 }
 
 .mariners-row {
-  background: #ccffcc;
+  background: var(--accent-row);
   font-weight: bold;
 }
 
-@keyframes marquee {
-  from {
-    transform: translateX(100%);
-  }
-
-  to {
-    transform: translateX(-100%);
-  }
-}
-
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
-}
-
-#center {
+.theme-toggle {
+  position: fixed;
+  top: 8px;
+  right: 8px;
   display: flex;
-  flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  gap: 4px;
+  z-index: 1000;
 }
 
-#next-steps {
+.theme-btn {
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 0.75em;
+  border: 2px outset #999;
+  background: #dddddd;
+  color: #000000;
+  cursor: pointer;
+}
+
+.theme-btn.active {
+  border-style: inset;
+  background: #aaaaaa;
+  font-weight: bold;
+}
+
+.league-table-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.view-toggle {
   display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+  justify-content: flex-end;
+  gap: 4px;
+  margin-bottom: 6px;
+  margin-right: 40px;
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+.view-btn {
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 0.75em;
+  border: 2px outset #999;
+  background: #dddddd;
+  color: #000000;
+  cursor: pointer;
 }
 
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+.view-btn.active {
+  border-style: inset;
+  background: #aaaaaa;
+  font-weight: bold;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
-}
-
-.ticks {
-  position: relative;
-  width: 100%;
-
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
-
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+.division-pill {
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 2px;
+  color: #ffffff;
+  font-size: 0.85em;
+  white-space: nowrap;
 }

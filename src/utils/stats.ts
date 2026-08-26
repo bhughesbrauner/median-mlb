@@ -76,24 +76,33 @@ export function interpolatedMedian(values: number[]): number | null {
 
   const n = values.length;
   const sorted = [...values].sort((a, b) => a - b);
+  const target = n / 2;
 
-  // Standard (non-interpolated) median position
-  const rawMedian = median(sorted)!;
+  const distinctValues = Array.from(new Set(sorted)).sort((a, b) => a - b);
 
-  // Count how many values fall strictly below the median's integer band,
-  // and how many fall exactly within it.
-  const lowerBound = rawMedian - 0.5;
-  const cumulativeBelow = sorted.filter((v) => v < rawMedian).length;
-  const freqAtMedian = sorted.filter((v) => v === rawMedian).length;
+  let cumulative = 0;
+  for (const v of distinctValues) {
+    const freq = sorted.filter((x) => x === v).length;
+    const cumulativeBefore = cumulative;
+    cumulative += freq;
 
-  if (freqAtMedian === 0) {
-    // Median landed exactly between two different integers (even n, no tie) —
-    // already has real precision (e.g. 3.5), nothing to interpolate.
-    return rawMedian;
+    if (cumulative >= target) {
+      const lowerBound = v - 0.5;
+      return lowerBound + ((target - cumulativeBefore) / freq) * 1;
+    }
   }
 
-  // Interpolated median formula for grouped/discrete data:
-  // L + ((n/2 - CF) / f) * h,  where h = 1 (width of one run-value band)
-  const interpolated = lowerBound + ((n / 2 - cumulativeBelow) / freqAtMedian) * 1;
-  return interpolated;
+  return median(sorted); // fallback, shouldn't be reached
+}
+
+export type RankKey = 'median' | 'mean' | 'diff';
+
+export function computeRanks(stats: TeamRunStats[], key: RankKey): Map<number, number> {
+  // Descending: highest value = rank 1, across all 30 teams.
+  const sorted = [...stats].sort((a, b) => b[key] - a[key]);
+  const ranks = new Map<number, number>();
+  sorted.forEach((team, index) => {
+    ranks.set(team.teamId, index + 1);
+  });
+  return ranks;
 }
